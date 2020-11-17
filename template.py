@@ -3,7 +3,9 @@ import json
 
 options = ["bin" , "hex", "dec"]
 
-#  State    Next_State   Inputs   Outputs
+#--------+-------------+--------+---------+
+#  State |  Next_State | Inputs | Outputs |
+#--------+-------------+--------+---------+
 
 dict = {
 "format" : options[0] ,
