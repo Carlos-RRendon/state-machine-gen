@@ -1,0 +1,77 @@
+{
+  "format": "bin",
+  "data": [
+    {
+      "actual_state": "s0",
+      "next_state": "S1",
+      "inputs": [
+        [
+          "A",
+          1
+        ],
+        [
+          "B",
+          1
+        ]
+      ],
+      "outputs": [
+        [
+          "x",
+          1
+        ],
+        [
+          "y",
+          0
+        ]
+      ]
+    },
+    {
+      "actual_state": "s1",
+      "next_state": "s2",
+      "inputs": [
+        [
+          "A",
+          0
+        ],
+        [
+          "B",
+          1
+        ]
+      ],
+      "outputs": [
+        [
+          "x",
+          0
+        ],
+        [
+          "y",
+          1
+        ]
+      ]
+    },
+    {
+      "actual_state": "s2",
+      "next_state": "s3",
+      "inputs": [
+        [
+          "A",
+          1
+        ],
+        [
+          "B",
+          0
+        ]
+      ],
+      "outputs": [
+        [
+          "x",
+          3
+        ],
+        [
+          "y",
+          1
+        ]
+      ]
+    }
+  ]
+}
