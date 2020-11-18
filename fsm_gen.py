@@ -109,9 +109,9 @@ class FsmGenerator():
         for key, value in outputs_bus.items():
 
             if value == 0 :
-                text_out += f'output {key}'
+                text_out += f'output reg {key}'
             else:
-                text_out += f'output [{value-1}:0] {key}'
+                text_out += f'output reg [{value-1}:0] {key}'
 
             if key != (list(outputs_bus)[-1]):
                 text_out += ",\n"
@@ -140,7 +140,7 @@ class FsmGenerator():
 
         text_out += '\ninitial begin\n  state=0;\nend\n'
 
-        text_out += "\nalways @ (posedge clk or rst)\n  begin\n  if (rst) <= "
+        text_out += "\nalways @ (posedge clk or rst)\n  begin\n  if (rst) state <= "
 
         text_out += f"{first_state};\n"
 
@@ -190,34 +190,54 @@ class FsmGenerator():
                         if flag_states == False:
                             text_out += f'{row["actual_state"]}: \n'
                             flag_states = True
+                            text_out += "  begin\n"
                         for input in row["inputs"]:
                             if input[1] != -1:
                                 if flag == False:
-                                    text_out += f"if (({input[0]} == {input[1]}"
+                                    text_out += f"   if (({input[0]} == {input[1]}"
                                     flag = True
                                 else:
                                     text_out += f" ) & ( {input[0]} == {input[1]}"
 
                         flag = False
                         text_out += "))\n"
-                        text_out += f"  next_state <= {row['next_state']};\n"
+                        text_out += f"     next_state <= {row['next_state']};\n"
+
+                text_out += "   end\n"
                 flag_states = False
 
 
-                        #text_out += f'{row["actual_state"]}: next_state = {row["next_state"]}\n'
+
+        text_out += "  endcase\nend\n\n"
+
+        text_out += "always @ (state)\n"
+
+        text_out += "  begin\n  case(state)\n"
 
 
-        #print(states)
+        flag_out = True
 
-        #text_out +=
+        for key, value in states.items():
+            print(key)
+            for row in self.data["data"]:
+                if key == row["actual_state"] and flag_out:
+                    text_out += f'    {row["actual_state"]}: \n'
+                    flag_out = False
+                    text_out += "    begin\n"
+                    for outputs in row["outputs"]:
+                        text_out += f'        {outputs[0]} = {outputs[1]};\n'
 
+            flag_out = True
 
-        #print(first_state)
+            text_out += "    end\n"
+        text_out += "  endcase\n"
+        text_out += " end\n\nendmodule"
 
-        #print(inputs_bus,outputs_bus)
         print(text_out)
 
-        #f = open(new_name, "w")
+        f = open(name, "w")
+        f.write(text_out)
+        f.close
 
 
 
