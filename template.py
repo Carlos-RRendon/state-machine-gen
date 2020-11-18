@@ -80,7 +80,7 @@ dict = {
             "actual_state": "s2",
             "next_state": "s4",
             "inputs": [["A", 0b11], ["B", 'x']],
-            "outputs": [["x", bin(4)], ["y", 0b1]]
+            "outputs": [["x", 4], ["y", 0b1]]
         }
 
     ]

@@ -5,97 +5,36 @@
       "actual_state": "s0",
       "next_state": "s1",
       "inputs": [
-        [
-          "OP",
-          "x"
-        ]
-
+        ["OP","x"]
       ],
       "outputs": [
-        [
-          "IorD",
-          0
-        ],
-        [
-          "AluSrcA",
-          "0b01"
-        ],
-        ["ALUSrcB",
-          1
-        ],
-        [
-          "AlUop",
-          "0b0"
-        ],
-        [
-          "PCSrc",
-          0
-        ],
-        [
-          "IRWrite",
-          "0b1"
-        ],
-        [
-          "PCWrite",
-          "1"
-        ],
-        [
-          "RegDst",
-          0
-        ],
-        [
-          "MemtoReg",
-          0
-        ],
-        [
-          "Regwrite",
-          0
-        ],
-        [
-          "Branch",
-          0
-        ],
-        [
-          "MemWrite",0
-        ]
+        ["IorD",0],
+        ["AluSrcA",1],
+        ["ALUSrcB",1],
+        ["AlUop",0],
+        ["PCSrc",0],
+        ["IRWrite",1],
+        ["PCWrite", 1],
+        ["RegDst",0],
+        ["MemtoReg",0],
+        ["Regwrite",0],
+        ["Branch",0],
+        ["MemWrite",0]
       ]
     },
      {
       "actual_state": "s1",
       "next_state": "s2",
       "inputs": [
-        [
-          "OP",
-          35
-        ]
-
+        ["OP",35]
       ],
       "outputs": [
-
-        [
-          "AluSrcA",
-          "0b01"
-        ],
-        [
-          "ALUSrcB",
-          "0b01"
-        ],
-        [
-          "AlUop",
-          "0b0"
-        ],
-        [
-          "PCSrc",
-          0
-        ],
-        [
-          "IRWrite",
-          "0b1"
-        ],
-        [
-          "PCWrite",
-          "1"
-        ]
+        ["AluSrcA",1],
+        ["ALUSrcB",1],
+        ["AlUop",0],
+        ["PCSrc",0],
+        ["IRWrite",1],
+        ["PCWrite",1]
       ]
     },
      {
@@ -105,11 +44,11 @@
         ["OP",43]
       ],
       "outputs": [
-        ["AluSrcA","0b0"],
-        ["ALUSrcB","0b11"],
-        ["AlUop","0b0"],
-        ["IRWrite","0b1"],
-        ["PCWrite","1"]
+        ["AluSrcA",0],
+        ["ALUSrcB",3],
+        ["AlUop",0],
+        ["IRWrite",1],
+        ["PCWrite",1]
       ]
     },
      {
@@ -119,11 +58,11 @@
         ["OP",0]
       ],
       "outputs": [
-        ["AluSrcA","0b0"],
-        ["ALUSrcB","0b11"],
-        ["AlUop","0b0"],
-        ["IRWrite","0b0"],
-        ["PCWrite","0"]
+        ["AluSrcA",0],
+        ["ALUSrcB",3],
+        ["AlUop",0],
+        ["IRWrite",0],
+        ["PCWrite",0]
       ]
     },
      {
@@ -133,11 +72,11 @@
         ["OP",4]
       ],
       "outputs": [
-        ["AluSrcA","0b0"],
-        ["ALUSrcB","0b11"],
-        ["AlUop","0b00"],
-        ["IRWrite","0b0"],
-        ["PCWrite","0"]
+        ["AluSrcA",0],
+        ["ALUSrcB",3],
+        ["AlUop",0],
+        ["IRWrite",0],
+        ["PCWrite",0]
       ]
     },
      {
@@ -147,11 +86,11 @@
         ["OP",8]
       ],
       "outputs": [
-        ["AluSrcA","0b0"],
-        ["ALUSrcB","0b11"],
-        ["AlUop","0b0"],
-        ["IRWrite","0b0"],
-        ["PCWrite","0"]
+        ["AluSrcA",0],
+        ["ALUSrcB",3],
+        ["AlUop",0],
+        ["IRWrite",0],
+        ["PCWrite",0]
       ]
     },
      {
@@ -161,11 +100,11 @@
         ["OP",43]
       ],
       "outputs": [
-        ["AluSrcA","0b0"],
-        ["ALUSrcB","0b11"],
-        ["AlUop","0b0"],
-        ["IRWrite","0b0"],
-        ["PCWrite","0"]
+        ["AluSrcA",0],
+        ["ALUSrcB",0],
+        ["AlUop",0],
+        ["IRWrite",0],
+        ["PCWrite",0]
       ]
     },
      {
@@ -175,9 +114,9 @@
         ["OP",35]
       ],
       "outputs": [
-        ["AluSrcA","0b1"],
-        ["ALUSrcB","0b10"],
-        ["AlUop","0b0"]
+        ["AluSrcA",1],
+        ["ALUSrcB",2],
+        ["AlUop",0]
       ]
     },
      {
@@ -187,9 +126,9 @@
         ["OP",45]
       ],
       "outputs": [
-        ["AluSrcA","0b1"],
-        ["ALUSrcB","0b10"],
-        ["AlUop","0b0"]
+        ["AluSrcA",1],
+        ["ALUSrcB",2],
+        ["AlUop",0]
       ]
     },
      {
@@ -199,7 +138,7 @@
         ["OP","x"]
       ],
       "outputs": [
-        ["IorD","0b1"]
+        ["IorD",1]
       ]
     },
      {
@@ -209,9 +148,9 @@
         ["OP","x"]
       ],
       "outputs": [
-        ["RegDst","0b0"],
-        ["MemtoReg","0b1"],
-        ["RegWrite","0b1"]
+        ["RegDst",0],
+        ["MemtoReg",1],
+        ["RegWrite",1]
       ]
     },
      {
@@ -221,7 +160,7 @@
         ["OP","x"]
       ],
       "outputs": [
-        ["IorD","0b1"]
+        ["IorD",1]
 
       ]
     },
@@ -232,9 +171,9 @@
         ["OP","x"]
       ],
       "outputs": [
-        ["AluSrcA","0b1"],
-        ["ALUSrcB","0b00"],
-        ["AlUop","0b10"]
+        ["AluSrcA",1],
+        ["ALUSrcB",0],
+        ["AlUop",2]
       ]
     },
      {
@@ -244,9 +183,9 @@
         ["OP","x"]
       ],
       "outputs": [
-        ["RegDst","0b1"],
-        ["MemtoReg","0b0"],
-        ["RegWrite","0b1"]
+        ["RegDst",1],
+        ["MemtoReg",0],
+        ["RegWrite",1]
       ]
     },
      {
@@ -256,11 +195,11 @@
         ["OP","x"]
       ],
       "outputs": [
-        ["AluSrcA","0b1"],
-        ["ALUSrcB","0b00"],
-        ["AlUop","0b01"],
-        ["PcSrc", "0b01"],
-        ["Branch","0b1"]
+        ["AluSrcA",1],
+        ["ALUSrcB",0],
+        ["AlUop",1],
+        ["PcSrc", 1],
+        ["Branch",1]
       ]
     },
      {
@@ -270,9 +209,9 @@
         ["OP","x"]
       ],
       "outputs": [
-        ["AluSrcA","0b1"],
-        ["ALUSrcB","0b10"],
-        ["AlUop","0b00"]
+        ["AluSrcA",1],
+        ["ALUSrcB",1],
+        ["AlUop",0]
       ]
     },
      {
@@ -282,9 +221,9 @@
         ["OP","x"]
       ],
       "outputs": [
-        ["RegDst","0b0"],
-        ["MemtoReg","0b0"],
-        ["RegWrite","0b1"]
+        ["RegDst",0],
+        ["MemtoReg",0],
+        ["RegWrite",1]
       ]
     },
      {
@@ -294,8 +233,8 @@
         ["OP","x"]
       ],
       "outputs": [
-        ["PCSrc","0b10"],
-        ["PCWrite","0b1"]
+        ["PCSrc",2],
+        ["PCWrite",1]
       ]
     }
   ]
