@@ -175,11 +175,11 @@ class FsmGenerator():
                                 else:
                                     text_out += f" ) & ( {input[0]} == {input[1]}"
 
-
                         flag = False
                         if (longitud == len(row['inputs'])) or ((len(row['inputs'])-longitud)==1):
-                            text_out += "))\n"
-                            longitud = 0
+                            if longitud != 0:
+                                text_out += "))\n"
+                                longitud = 0
 
                         text_out += f"  next_state <= {row['next_state']};\n"
 
