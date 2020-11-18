@@ -58,7 +58,7 @@ dict = {
         {
             "actual_state" :"s0",
             "next_state" :"s1",
-            "inputs" : [["A",'x'],["B","x"]],
+            "inputs" : [["A",10],["B",9]],
             "outputs" : [["x",0b01] , ["y" , 0b00]]
         },
 

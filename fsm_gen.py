@@ -176,10 +176,10 @@ class FsmGenerator():
                                     text_out += f" ) & ( {input[0]} == {input[1]}"
 
                         flag = False
-                        if (longitud == len(row['inputs'])) or ((len(row['inputs'])-longitud)==1):
-                            if longitud != 0:
-                                text_out += "))\n"
-                                longitud = 0
+                        #if (longitud == len(row['inputs'])) or ((len(row['inputs'])-longitud)==1):
+                        if (longitud != 0):
+                            text_out += "))\n"
+                            longitud = 0
 
                         text_out += f"  next_state <= {row['next_state']};\n"
 
@@ -223,5 +223,5 @@ class FsmGenerator():
 
 
 if __name__ == "__main__":
-    gen = FsmGenerator("control_fsm.json")
+    gen = FsmGenerator("data.json")
     gen.fsm_creator()
