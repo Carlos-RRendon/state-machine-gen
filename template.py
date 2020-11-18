@@ -65,14 +65,22 @@ dict = {
         {
             "actual_state": "s1",
             "next_state": "s2",
-            "inputs": [["A", 0b0], ["B", 0b1]],
+            "inputs": [["A", 0xff], ["B", 0b1]],
             "outputs": [["x", 0b00], ["y", 0b1]]
         },
-{
+
+
+           {
             "actual_state": "s2",
             "next_state": "s3",
-            "inputs": [["A", 0b1], ["B", 0b0]],
+            "inputs": [["A", 0b11], ["B", 0b0]],
             "outputs": [["x", 0b11], ["y", 0b1]]
+        },
+{
+            "actual_state": "s1",
+            "next_state": "s2",
+            "inputs": [["A", 0b0], ["B", 0b1]],
+            "outputs": [["x", 0b00], ["y", 0b1]]
         }
     ]
 }
