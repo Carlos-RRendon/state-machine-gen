@@ -58,14 +58,14 @@ dict = {
         {
             "actual_state" :"s0",
             "next_state" :"s1",
-            "inputs" : [["A",0b10],["B","x"]],
+            "inputs" : [["A",'x'],["B","x"]],
             "outputs" : [["x",0b01] , ["y" , 0b00]]
         },
 
         {
             "actual_state": "s1",
             "next_state": "s2",
-            "inputs": [["A", 0xff], ["B", 0b1]],
+            "inputs": [["A", 'x'], ["B", 'x']],
             "outputs": [["x", 0b00], ["y", 0b1]]
         },
 
@@ -73,21 +73,16 @@ dict = {
            {
             "actual_state": "s2",
             "next_state": "s3",
-            "inputs": [["A", 0b11], ["B", 0b0]],
+            "inputs": [["A", 0b11], ["B", 'x']],
             "outputs": [["x", 0b11], ["y", 0b1]]
         },
 {
-            "actual_state": "s1",
-            "next_state": "s2",
-            "inputs": [["A", 0b0], ["B", 0b1]],
-            "outputs": [["x", 0b00], ["y", 0b1]]
-        },
-{
-            "actual_state" :"s0",
-            "next_state" :"s3",
-            "inputs" : [["A",0x2],["B",0x4]],
-            "outputs" : [["x",0b01] , ["y" , 0b00]]
+            "actual_state": "s2",
+            "next_state": "s4",
+            "inputs": [["A", 0b11], ["B", 'x']],
+            "outputs": [["x", 0b11], ["y", 0b1]]
         }
+
     ]
 }
 if __name__ == "__main__" :

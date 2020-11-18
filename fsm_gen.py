@@ -74,9 +74,15 @@ class FsmGenerator():
 
         for key in bus_dict.keys():
 
+
             max_el = max(bus_dict[key])
-            max_el = math.ceil(math.log2(max_el))
-            bus_dict[key] = max_el
+
+            try:
+                max_el = math.ceil(math.log2(max_el))
+                bus_dict[key] = max_el
+            except ValueError:
+                bus_dict[key] = -1
+
 
         return bus_dict
 
@@ -172,8 +178,9 @@ class FsmGenerator():
 
 
                         flag = False
-                        if longitud == len(row['inputs']):
+                        if (longitud == len(row['inputs'])) or ((len(row['inputs'])-longitud)==1):
                             text_out += "))\n"
+                            longitud = 0
 
                         text_out += f"  next_state <= {row['next_state']};\n"
 
@@ -193,7 +200,6 @@ class FsmGenerator():
                                     text_out += f" ) & ( {input[0]} == {input[1]}"
 
                         flag = False
-
                         text_out += "))\n"
                         text_out += f"  next_state <= {row['next_state']};\n"
                 flag_states = False
