@@ -80,7 +80,7 @@ dict = {
             "actual_state": "s2",
             "next_state": "s4",
             "inputs": [["A", 0b11], ["B", 'x']],
-            "outputs": [["x", 0b11], ["y", 0b1]]
+            "outputs": [["x", bin(4)], ["y", 0b1]]
         }
 
     ]
@@ -95,4 +95,4 @@ if __name__ == "__main__" :
     jsonFile = 'data.json'
     # Open a json file for writing json data
     with open(jsonFile, 'w') as fileHandler1:
-      json.dump(dict, fileHandler1, indent = 2)
+      json.dump(dict, fileHandler1, indent = 3)

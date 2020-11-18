@@ -1,0 +1,302 @@
+{
+  "format": "bin",
+  "data": [
+     {
+      "actual_state": "s0",
+      "next_state": "s1",
+      "inputs": [
+        [
+          "OP",
+          "x"
+        ]
+
+      ],
+      "outputs": [
+        [
+          "IorD",
+          0
+        ],
+        [
+          "AluSrcA",
+          "0b01"
+        ],
+        ["ALUSrcB",
+          1
+        ],
+        [
+          "AlUop",
+          "0b0"
+        ],
+        [
+          "PCSrc",
+          0
+        ],
+        [
+          "IRWrite",
+          "0b1"
+        ],
+        [
+          "PCWrite",
+          "1"
+        ],
+        [
+          "RegDst",
+          0
+        ],
+        [
+          "MemtoReg",
+          0
+        ],
+        [
+          "Regwrite",
+          0
+        ],
+        [
+          "Branch",
+          0
+        ],
+        [
+          "MemWrite",0
+        ]
+      ]
+    },
+     {
+      "actual_state": "s1",
+      "next_state": "s2",
+      "inputs": [
+        [
+          "OP",
+          35
+        ]
+
+      ],
+      "outputs": [
+
+        [
+          "AluSrcA",
+          "0b01"
+        ],
+        [
+          "ALUSrcB",
+          "0b01"
+        ],
+        [
+          "AlUop",
+          "0b0"
+        ],
+        [
+          "PCSrc",
+          0
+        ],
+        [
+          "IRWrite",
+          "0b1"
+        ],
+        [
+          "PCWrite",
+          "1"
+        ]
+      ]
+    },
+     {
+      "actual_state": "s1",
+      "next_state": "s2",
+      "inputs": [
+        ["OP",43]
+      ],
+      "outputs": [
+        ["AluSrcA","0b0"],
+        ["ALUSrcB","0b11"],
+        ["AlUop","0b0"],
+        ["IRWrite","0b1"],
+        ["PCWrite","1"]
+      ]
+    },
+     {
+      "actual_state": "s1",
+      "next_state": "s2",
+      "inputs": [
+        ["OP",0]
+      ],
+      "outputs": [
+        ["AluSrcA","0b0"],
+        ["ALUSrcB","0b11"],
+        ["AlUop","0b0"],
+        ["IRWrite","0b0"],
+        ["PCWrite","0"]
+      ]
+    },
+     {
+      "actual_state": "s1",
+      "next_state": "s8",
+      "inputs": [
+        ["OP",4]
+      ],
+      "outputs": [
+        ["AluSrcA","0b0"],
+        ["ALUSrcB","0b11"],
+        ["AlUop","0b00"],
+        ["IRWrite","0b0"],
+        ["PCWrite","0"]
+      ]
+    },
+     {
+      "actual_state": "s1",
+      "next_state": "s9",
+      "inputs": [
+        ["OP",8]
+      ],
+      "outputs": [
+        ["AluSrcA","0b0"],
+        ["ALUSrcB","0b11"],
+        ["AlUop","0b0"],
+        ["IRWrite","0b0"],
+        ["PCWrite","0"]
+      ]
+    },
+     {
+      "actual_state": "s1",
+      "next_state": "s11",
+      "inputs": [
+        ["OP",43]
+      ],
+      "outputs": [
+        ["AluSrcA","0b0"],
+        ["ALUSrcB","0b11"],
+        ["AlUop","0b0"],
+        ["IRWrite","0b0"],
+        ["PCWrite","0"]
+      ]
+    },
+     {
+      "actual_state": "s2",
+      "next_state": "s3",
+      "inputs": [
+        ["OP",35]
+      ],
+      "outputs": [
+        ["AluSrcA","0b1"],
+        ["ALUSrcB","0b10"],
+        ["AlUop","0b0"]
+      ]
+    },
+     {
+      "actual_state": "s2",
+      "next_state": "s5",
+      "inputs": [
+        ["OP",45]
+      ],
+      "outputs": [
+        ["AluSrcA","0b1"],
+        ["ALUSrcB","0b10"],
+        ["AlUop","0b0"]
+      ]
+    },
+     {
+      "actual_state": "s3",
+      "next_state": "s4",
+      "inputs": [
+        ["OP","x"]
+      ],
+      "outputs": [
+        ["IorD","0b1"]
+      ]
+    },
+     {
+      "actual_state": "s4",
+      "next_state": "s0",
+      "inputs": [
+        ["OP","x"]
+      ],
+      "outputs": [
+        ["RegDst","0b0"],
+        ["MemtoReg","0b1"],
+        ["RegWrite","0b1"]
+      ]
+    },
+     {
+      "actual_state": "s5",
+      "next_state": "s6",
+      "inputs": [
+        ["OP","x"]
+      ],
+      "outputs": [
+        ["IorD","0b1"]
+
+      ]
+    },
+     {
+      "actual_state": "s6",
+      "next_state": "s7",
+      "inputs": [
+        ["OP","x"]
+      ],
+      "outputs": [
+        ["AluSrcA","0b1"],
+        ["ALUSrcB","0b00"],
+        ["AlUop","0b10"]
+      ]
+    },
+     {
+      "actual_state": "s7",
+      "next_state": "s0",
+      "inputs": [
+        ["OP","x"]
+      ],
+      "outputs": [
+        ["RegDst","0b1"],
+        ["MemtoReg","0b0"],
+        ["RegWrite","0b1"]
+      ]
+    },
+     {
+      "actual_state": "s8",
+      "next_state": "s0",
+      "inputs": [
+        ["OP","x"]
+      ],
+      "outputs": [
+        ["AluSrcA","0b1"],
+        ["ALUSrcB","0b00"],
+        ["AlUop","0b01"],
+        ["PcSrc", "0b01"],
+        ["Branch","0b1"]
+      ]
+    },
+     {
+      "actual_state": "s9",
+      "next_state": "s10",
+      "inputs": [
+        ["OP","x"]
+      ],
+      "outputs": [
+        ["AluSrcA","0b1"],
+        ["ALUSrcB","0b10"],
+        ["AlUop","0b00"]
+      ]
+    },
+     {
+      "actual_state": "s10",
+      "next_state": "s0",
+      "inputs": [
+        ["OP","x"]
+      ],
+      "outputs": [
+        ["RegDst","0b0"],
+        ["MemtoReg","0b0"],
+        ["RegWrite","0b1"]
+      ]
+    },
+     {
+      "actual_state": "s11",
+      "next_state": "s0",
+      "inputs": [
+        ["OP","x"]
+      ],
+      "outputs": [
+        ["PCSrc","0b10"],
+        ["PCWrite","0b1"]
+      ]
+    }
+  ]
+}

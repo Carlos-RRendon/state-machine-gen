@@ -74,7 +74,6 @@ class FsmGenerator():
 
         for key in bus_dict.keys():
 
-
             max_el = max(bus_dict[key])
 
             try:
@@ -224,5 +223,5 @@ class FsmGenerator():
 
 
 if __name__ == "__main__":
-    gen = FsmGenerator("data.json")
+    gen = FsmGenerator("control_fsm.json")
     gen.fsm_creator()
