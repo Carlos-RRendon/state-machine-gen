@@ -9,6 +9,8 @@ class FsmGenerator():
         with open(file) as json_file:
             self.data = json.load(json_file)
 
+        self.verify()
+
     def verify(self):
         key_words = [["format", "data"], ["actual_state", "next_state", "inputs", "outputs"]]
 
@@ -24,6 +26,15 @@ class FsmGenerator():
                 for key in self.data["data"][file].keys():
                     if key in key_words[1]:
                         flag_l2 += 1
+
+                    if key == "inputs":
+                        for input in self.data['data'][file]["inputs"]:
+                            if len(input)==1:
+                                input.append(-1)
+                            if input[1] == ("x" or "X"):
+                                input[1] = -1
+
+
 
         if flag_l2 % len(self.data["data"]) == 0:
             print("Verified file")
@@ -68,7 +79,6 @@ class FsmGenerator():
             bus_dict[key] = max_el
 
         return bus_dict
-
 
     def fsm_creator(self):
 
@@ -129,11 +139,72 @@ class FsmGenerator():
 
         text_out += f"{first_state};\n"
 
-        text_out += "  else state <= next_state;\n  end\n"
+        text_out += "  else state <= next_state;\n  end\n\n"
 
-        text_out += "always @ (state,"
+        text_out += f"always @ (state, "
+
+        for key in inputs_bus.keys():
+
+            text_out += f'{key}'
+
+            if key != (list(inputs_bus)[-1]):
+                text_out += ', '
+
+        text_out += ')\n'
+        text_out += 'begin\n case(state)\n'
+        flag = False
+        flag_states = False
+        longitud = 0
+
+        for key,value in states.items():
+            if value == 1:
+                for row in self.data["data"]:
+                    if key ==row["actual_state"]:
+                        text_out += f'{row["actual_state"]}: \n'
+                        for input in row["inputs"]:
+                            if input[1] != -1:
+                                longitud += 1
+                                if flag == False:
+                                    text_out += f"if (({input[0]} == {input[1]}"
+                                    flag = True
+                                else:
+                                    text_out += f" ) & ( {input[0]} == {input[1]}"
 
 
+                        flag = False
+                        if longitud == len(row['inputs']):
+                            text_out += "))\n"
+
+                        text_out += f"  next_state <= {row['next_state']};\n"
+
+            else:
+                for row in self.data["data"]:
+                    if key ==row["actual_state"]:
+
+                        if flag_states == False:
+                            text_out += f'{row["actual_state"]}: \n'
+                            flag_states = True
+                        for input in row["inputs"]:
+                            if input[1] != -1:
+                                if flag == False:
+                                    text_out += f"if (({input[0]} == {input[1]}"
+                                    flag = True
+                                else:
+                                    text_out += f" ) & ( {input[0]} == {input[1]}"
+
+                        flag = False
+
+                        text_out += "))\n"
+                        text_out += f"  next_state <= {row['next_state']};\n"
+                flag_states = False
+
+
+                        #text_out += f'{row["actual_state"]}: next_state = {row["next_state"]}\n'
+
+
+        #print(states)
+
+        #text_out +=
 
 
         #print(first_state)
