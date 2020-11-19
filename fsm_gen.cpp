@@ -6,6 +6,19 @@
 
 using namespace std;
 
+int BinToDec(long long n)
+{
+    int decimalNumber = 0, i = 0, remainder;
+    while (n!=0)
+    {
+        remainder = n%10;
+        n /= 10;
+        decimalNumber += remainder*pow(2,i);
+        ++i;
+    }
+    return decimalNumber;
+}
+
 string decToBinary(int n, int dim) 
 { 
     // array to store binary number 
@@ -47,6 +60,40 @@ map <string,string> ini_states(map <int,map <string,map <string,string> > > stat
     }
 
     return iniStates;
+}
+
+map <string,int> port_width(map <int,map <string,map <string,string> > > states,string type){
+    map <string,int> maximos;
+    vector <string> key;
+    for(int i=0;i<states.size();i++){
+        for(auto const& in:states[i][type]){
+            key.push_back(in.first);
+        }
+    }
+    cout <<endl;            //Erase duplicates
+    cout << type<< endl;
+    auto end = key.end();
+    for(auto it=key.begin();it != end; ++it){
+            end = remove(it + 1, end, *it);
+    }
+    key.erase(end,key.end());
+    vector <long long> tempo;
+    for(int j=0; j<key.size();j++){         //Print the inputs in order
+        for(int i=0;i<states.size();i++){
+            for(auto const& in:states[i][type]){
+                if(in.first == key[j]){
+                    if((in.first != "x")&&(in.first !="X")){
+                        long long binsignal = BinToDec(stoi(in.second));
+                        tempo.push_back(binsignal);
+                    }
+                }
+            }
+        }
+        int max = *std::max_element(tempo.begin(),tempo.end());
+        maximos.insert(pair<string,int>(key[j],max));
+        tempo.clear();
+    }
+    return maximos;
 }
  
 int main()
@@ -147,25 +194,13 @@ int main()
     }
 
     cout << endl;
-
-    //Inputs analysis
-    map <string,int> maximos;
-    vector <string> key;
-    for(int i=0;i<fsm_io.size();i++){
-        for(auto const& in:fsm_io[i]["inputs"]){
-            cout << in.first << " => " << in.second << endl;
-            int num = stoi(in.second);
-            key.push_back(in.first);
-            //vector <int> values;
-            //values.push_back(num);
-            //maximos.emplace(pair<string, vector<int> >(in.first,values));
-        }
+    
+    for (auto const& out:port_width(fsm_io,"inputs")){         //Print actual states along its number of repetitions
+        cout << out.first << " => " << out.second << endl;
     }
-    cout <<endl;
-
-    for(int j=0; j<key.size();j++){
-            cout << key[j] << endl;
-    }
+    for (auto const& out:port_width(fsm_io,"outputs")){         //Print actual states along its number of repetitions
+        cout << out.first << " => " << out.second << endl;
+    }     
 
     /*map <string,int> countMap;              //Find duplicates
     for(int i=0;i<fsm_io.size();i++){
