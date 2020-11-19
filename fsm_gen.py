@@ -94,7 +94,7 @@ class FsmGenerator():
         outputs_bus = self.find_bus("outputs")
 
 
-        name = "FSM.sv"
+        name = "FSM.v"
 
         text_out = "module state_machine (\n"
 
