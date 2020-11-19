@@ -1,8 +1,14 @@
+#!/usr/bin/env python
+
 import json
 import math
 
-
 class FsmGenerator():
+
+
+# -------------------------------------------------------------------------------------------
+# Reading of the manually filled .JSON file
+# -------------------------------------------------------------------------------------------    
 
     def __init__(self, file):
 
@@ -10,6 +16,10 @@ class FsmGenerator():
             self.data = json.load(json_file)
 
         self.verify()
+
+# -------------------------------------------------------------------------------------------
+# Integrity verification of the manually filled .JSON file
+# -------------------------------------------------------------------------------------------
 
     def verify(self):
         key_words = [["format", "data"], ["actual_state", "next_state", "inputs", "outputs"]]
@@ -44,6 +54,10 @@ class FsmGenerator():
             print("Warning!!!! Wrong format")
             return False
 
+# -------------------------------------------------------------------------------------------
+# FSM States detection
+# -------------------------------------------------------------------------------------------           
+
     def state_treatment(self):
 
         import collections
@@ -57,6 +71,9 @@ class FsmGenerator():
         states = collections.Counter(states)
         return states
 
+# -------------------------------------------------------------------------------------------
+# FSM Ports width identification 
+# ------------------------------------------------------------------------------------------- 
 
     def find_bus(self,key):
 
@@ -84,6 +101,11 @@ class FsmGenerator():
 
 
         return bus_dict
+
+
+# -------------------------------------------------------------------------------------------
+# Generation of the Verilog textfile design
+# -------------------------------------------------------------------------------------------        
 
     def fsm_creator(self):
 
