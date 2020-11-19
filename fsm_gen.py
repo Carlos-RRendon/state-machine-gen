@@ -93,10 +93,19 @@ class FsmGenerator():
         inputs_bus = self.find_bus("inputs")
         outputs_bus = self.find_bus("outputs")
 
-
         name = "FSM.sv"
 
-        text_out = "module state_machine (\n"
+        text_out = "//=========================================================================================\n"
+        text_out += "// FSM Verilog design\n"
+        text_out += "//=========================================================================================\n\n\n"
+
+
+
+        text_out += "//------------------------------------------------------------------------------------------\n"
+        text_out += "// Module name and ports declaration\n" 
+        text_out += "//------------------------------------------------------------------------------------------\n\n"   
+
+        text_out += "module state_machine (\n"
 
         text_out += "input clk, rst,\n"
 
@@ -127,6 +136,11 @@ class FsmGenerator():
 
         text_out += ");\n\n"
 
+
+        text_out += "//------------------------------------------------------------------------------------------\n"
+        text_out += "// FSM states declaration\n" 
+        text_out += "//------------------------------------------------------------------------------------------\n" 
+        
         bits = len(states)
         bits = math.ceil(math.log2(bits))
         first_state = None
@@ -146,13 +160,22 @@ class FsmGenerator():
         else:
             text_out += 'reg state, next_state; \n'
 
+        text_out += " \n //FSM Initialization state"     
+
         text_out += '\ninitial begin\n  state=0;\nend\n'
+
+        text_out += " \n //FSM State transitions (clock dependant)"   
 
         text_out += "\nalways @ (posedge clk or rst)\n  begin\n  if (rst) state <= "
 
         text_out += f"{first_state};\n"
 
         text_out += "  else state <= next_state;\n  end\n\n"
+
+
+        text_out += "//------------------------------------------------------------------------------------------\n"
+        text_out += "// FSM States assignment\n" 
+        text_out += "//------------------------------------------------------------------------------------------\n" 
 
         text_out += f"always @ (state, "
 
@@ -217,6 +240,12 @@ class FsmGenerator():
 
 
         text_out += "  endcase\nend\n\n"
+
+
+
+        text_out += "//------------------------------------------------------------------------------------------\n"
+        text_out += "// FSM Outputs assignment\n" 
+        text_out += "//------------------------------------------------------------------------------------------\n"
 
         text_out += "always @ (state)\n"
 

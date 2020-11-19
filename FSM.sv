@@ -1,3 +1,12 @@
+//=========================================================================================
+// FSM Verilog design
+//=========================================================================================
+
+
+//------------------------------------------------------------------------------------------
+// Module name and ports declaration
+//------------------------------------------------------------------------------------------
+
 module state_machine (
 input clk, rst,
 input [5:0] OP,
@@ -15,6 +24,9 @@ output reg Branch,
 output reg MemWrite,
 output reg PcSrc);
 
+//------------------------------------------------------------------------------------------
+// FSM states declaration
+//------------------------------------------------------------------------------------------
 parameter s0 = 4'b0;
 parameter s1 = 4'b1;
 parameter s2 = 4'b10;
@@ -28,17 +40,22 @@ parameter s9 = 4'b1001;
 parameter s10 = 4'b1010;
 parameter s11 = 4'b1011;
 reg [3:0] state, next_state;
-
+ 
+ //FSM Initialization state
 initial begin
   state=0;
 end
-
+ 
+ //FSM State transitions (clock dependant)
 always @ (posedge clk or rst)
   begin
   if (rst) state <= s0;
   else state <= next_state;
   end
 
+//------------------------------------------------------------------------------------------
+// FSM States assignment
+//------------------------------------------------------------------------------------------
 always @ (state, OP)
 begin
  case(state)
@@ -87,6 +104,9 @@ s11:
   endcase
 end
 
+//------------------------------------------------------------------------------------------
+// FSM Outputs assignment
+//------------------------------------------------------------------------------------------
 always @ (state)
   begin
   case(state)
@@ -133,6 +153,7 @@ always @ (state)
     s5: 
     begin
         IorD = 1;
+        MemWrite = 1;
     end
     s6: 
     begin
