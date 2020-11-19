@@ -3,3 +3,4 @@ FSM_project.code-workspace
 asdf.py
 venv
 .idea
+__pycache__
