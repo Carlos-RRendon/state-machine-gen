@@ -5,7 +5,6 @@
 
 using namespace std;
  
-
 int main()
 {
     ifstream inFile;
@@ -56,6 +55,7 @@ int main()
                 regex_search(Inputs, m, comma);
                 fsm_io[ren-1]["inputs"][m[1]] = m[2];
             }
+            cout << Outputs << endl;
             if (pc_ou > 0){ //For Outputs
                 com1 = com;
                 for(int i=0;i<pc_ou;i++){
@@ -66,7 +66,7 @@ int main()
                 //cout << "Aqui" << endl;
                 for(int i=1;i<=(pc_ou+1);i++){
                     fsm_io[ren-1]["outputs"][m[((i+i)-1)]] = m[(i+i)];
-                    //cout << "Check: " << m[((i+i)-1)] << m[(i+i)] << endl;
+                    cout << "Check: " << m[((i+i)-1)] << m[(i+i)] << endl;
                 }
             }else{
                 regex comma(com);
