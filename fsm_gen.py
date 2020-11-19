@@ -115,7 +115,7 @@ class FsmGenerator():
         inputs_bus = self.find_bus("inputs")
         outputs_bus = self.find_bus("outputs")
 
-        name = "FSM.sv"
+        name = "FSM_p.sv"
 
         text_out = "//=============================================================================\n"
         text_out += "// FSM Verilog design\n"
