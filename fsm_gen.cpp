@@ -2,8 +2,52 @@
 #include <regex>
 #include <string>
 #include <fstream>
+#include <math.h>
 
 using namespace std;
+
+string decToBinary(int n, int dim) 
+{ 
+    // array to store binary number 
+    int binaryNum[dim]; 
+    string binario;
+    // counter for binary array 
+    int i = 0;    
+    while (n > 0) { 
+  
+        // storing remainder in binary array 
+        binaryNum[i] = n % 2; 
+        
+        n = n / 2; 
+        i++; 
+    } 
+    for(int k = 0; k< dim-i;k++)
+        binario += "0";
+    for (int j = i - 1; j >= 0; j--) 
+        binario += to_string(binaryNum[j]);
+    return binario;
+   
+} 
+//Function to intialize states
+map <string,string> ini_states(map <int,map <string,map <string,string> > > states){
+    map <string,int> countMap;              //Find duplicates
+    for(int i=0;i<states.size();i++){
+        auto result = countMap.insert(pair<string,int>(states[i]["actual"]["1"],1));
+        if(result.second == false)
+            result.first->second++;
+    }
+    //Bit dimension and initializate states
+    int bits = ceil(log2(countMap.size()));
+    //cout << bits << endl;
+    int j=0;
+    map <string,string> iniStates;
+    for (auto const& out:countMap){         //Print actual states along its number of repetitions
+        iniStates.insert(pair<string,string> (out.first, decToBinary(j,bits) ) );
+        j+=1;
+    }
+
+    return iniStates;
+}
  
 int main()
 {
@@ -55,7 +99,7 @@ int main()
                 regex_search(Inputs, m, comma);
                 fsm_io[ren-1]["inputs"][m[1]] = m[2];
             }
-            cout << Outputs << endl;
+            //cout << Outputs << endl;
             if (pc_ou > 0){ //For Outputs
                 com1 = com;
                 for(int i=0;i<pc_ou;i++){
@@ -85,7 +129,7 @@ int main()
         cout << fsm[i]["outputs"] << endl << "\n";
     }
 
-    for(int i=0;i<fsm_io.size();i++){
+    /*for(int i=0;i<fsm_io.size();i++){
         cout << "actual => " << fsm_io[i]["actual"]["1"] << endl;
         cout << "next => " << fsm_io[i]["next"]["1"] << endl;
         for(auto const& in:fsm_io[i]["inputs"]){
@@ -95,8 +139,49 @@ int main()
             cout << out.first << " => " << out.second << endl;
         }
         cout << endl;
+    }*/
+    inFile.close();
+    //Initialize states
+    for (auto const& out:ini_states(fsm_io)){         //Print actual states along its number of repetitions
+        cout << out.first << " => " << out.second << endl;
     }
 
-    inFile.close();
+    cout << endl;
+
+    //Inputs analysis
+    map <string,int> maximos;
+    vector <string> key;
+    for(int i=0;i<fsm_io.size();i++){
+        for(auto const& in:fsm_io[i]["inputs"]){
+            cout << in.first << " => " << in.second << endl;
+            int num = stoi(in.second);
+            key.push_back(in.first);
+            //vector <int> values;
+            //values.push_back(num);
+            //maximos.emplace(pair<string, vector<int> >(in.first,values));
+        }
+    }
+    cout <<endl;
+
+    for(int j=0; j<key.size();j++){
+            cout << key[j] << endl;
+    }
+
+    /*map <string,int> countMap;              //Find duplicates
+    for(int i=0;i<fsm_io.size();i++){
+        map <string,int> result;
+        for(auto const& in:fsm_io[i]["inputs"]){
+        result = countMap.insert(pair<string,int>(in.first,1));
+        }
+        if(result.second == false)
+            result.first->second++;
+    }*/
+
+    /*cout << endl;
+
+    for (auto const& out:maximos){         //Print actual states along its number of repetitions
+        cout << out.first << " => " << out.second << endl;
+    }*/
+
     return 0;
 }
