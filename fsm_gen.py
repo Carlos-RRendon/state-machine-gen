@@ -1,8 +1,14 @@
+#!/usr/bin/env python
+
 import json
 import math
 
-
 class FsmGenerator():
+
+
+# -------------------------------------------------------------------------------------------
+# Reading of the manually filled .JSON file
+# -------------------------------------------------------------------------------------------    
 
     def __init__(self, file):
 
@@ -10,6 +16,10 @@ class FsmGenerator():
             self.data = json.load(json_file)
 
         self.verify()
+
+# -------------------------------------------------------------------------------------------
+# Integrity verification of the manually filled .JSON file
+# -------------------------------------------------------------------------------------------
 
     def verify(self):
         key_words = [["format", "data"], ["actual_state", "next_state", "inputs", "outputs"]]
@@ -44,6 +54,10 @@ class FsmGenerator():
             print("Warning!!!! Wrong format")
             return False
 
+# -------------------------------------------------------------------------------------------
+# FSM States detection
+# -------------------------------------------------------------------------------------------           
+
     def state_treatment(self):
 
         import collections
@@ -57,6 +71,9 @@ class FsmGenerator():
         states = collections.Counter(states)
         return states
 
+# -------------------------------------------------------------------------------------------
+# FSM Ports width identification 
+# ------------------------------------------------------------------------------------------- 
 
     def find_bus(self,key):
 
@@ -85,6 +102,11 @@ class FsmGenerator():
 
         return bus_dict
 
+
+# -------------------------------------------------------------------------------------------
+# Generation of the Verilog textfile design
+# -------------------------------------------------------------------------------------------        
+
     def fsm_creator(self):
 
         import os
@@ -93,10 +115,19 @@ class FsmGenerator():
         inputs_bus = self.find_bus("inputs")
         outputs_bus = self.find_bus("outputs")
 
+        name = "FSM.sv"
 
-        name = "FSM.v"
+        text_out = "//=============================================================================\n"
+        text_out += "// FSM Verilog design\n"
+        text_out += "//=============================================================================\n\n\n"
 
-        text_out = "module state_machine (\n"
+
+
+        text_out += "//-----------------------------------------------------------------------------\n"
+        text_out += "// Module name and ports declaration\n" 
+        text_out += "//-----------------------------------------------------------------------------\n\n"   
+
+        text_out += "module state_machine (\n"
 
         text_out += "input clk, rst,\n"
 
@@ -127,6 +158,11 @@ class FsmGenerator():
 
         text_out += ");\n\n"
 
+
+        text_out += "//-----------------------------------------------------------------------------\n"
+        text_out += "// FSM states declaration\n" 
+        text_out += "//-----------------------------------------------------------------------------\n" 
+        
         bits = len(states)
         bits = math.ceil(math.log2(bits))
         first_state = None
@@ -146,13 +182,22 @@ class FsmGenerator():
         else:
             text_out += 'reg state, next_state; \n'
 
+        text_out += " \n //FSM Initialization state"     
+
         text_out += '\ninitial begin\n  state=0;\nend\n'
+
+        text_out += " \n //FSM State transitions (clock dependant)"   
 
         text_out += "\nalways @ (posedge clk or rst)\n  begin\n  if (rst) state <= "
 
         text_out += f"{first_state};\n"
 
         text_out += "  else state <= next_state;\n  end\n\n"
+
+
+        text_out += "//-----------------------------------------------------------------------------\n"
+        text_out += "// FSM States assignment\n" 
+        text_out += "//-----------------------------------------------------------------------------\n" 
 
         text_out += f"always @ (state, "
 
@@ -218,6 +263,12 @@ class FsmGenerator():
 
         text_out += "  endcase\nend\n\n"
 
+
+
+        text_out += "//-----------------------------------------------------------------------------\n"
+        text_out += "// FSM Outputs assignment\n" 
+        text_out += "//-----------------------------------------------------------------------------\n"
+
         text_out += "always @ (state)\n"
 
         text_out += "  begin\n  case(state)\n"
@@ -240,6 +291,9 @@ class FsmGenerator():
             text_out += "    end\n"
         text_out += "  endcase\n"
         text_out += " end\n\nendmodule"
+
+        text_out += "\n\n//=============================================================================\n"
+        text_out += "//=============================================================================\n\n"
 
         print(text_out)
 
