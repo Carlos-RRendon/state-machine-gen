@@ -41,6 +41,18 @@ string decToBinary(int n, int dim)
     return binario;
    
 } 
+
+//Function to intialize states
+map <string,int> rep_states(map <int,map <string,map <string,string> > > states){
+    map <string,int> countMap;              //Find duplicates
+    for(int i=0;i<states.size();i++){
+        auto result = countMap.insert(pair<string,int>(states[i]["actual"]["1"],1));
+        if(result.second == false)
+            result.first->second++;
+    }
+    return countMap;
+}
+
 //Function to intialize states
 map <string,string> ini_states(map <int,map <string,map <string,string> > > states){
     map <string,int> countMap;              //Find duplicates
@@ -65,6 +77,7 @@ map <string,string> ini_states(map <int,map <string,map <string,string> > > stat
 map <string,int> port_width(map <int,map <string,map <string,string> > > states,string type){
     map <string,int> maximos;
     vector <string> key;
+    
     for(int i=0;i<states.size();i++){
         for(auto const& in:states[i][type]){
             key.push_back(in.first);
@@ -82,7 +95,7 @@ map <string,int> port_width(map <int,map <string,map <string,string> > > states,
         for(int i=0;i<states.size();i++){
             for(auto const& in:states[i][type]){
                 if(in.first == key[j]){
-                    if((in.first != "x")&&(in.first !="X")){
+                    if((in.second != "x")&&(in.second !="X")){
                         long long binsignal = BinToDec(stoi(in.second));
                         tempo.push_back(binsignal);
                     }
@@ -90,7 +103,12 @@ map <string,int> port_width(map <int,map <string,map <string,string> > > states,
             }
         }
         int max = *std::max_element(tempo.begin(),tempo.end());
-        maximos.insert(pair<string,int>(key[j],max));
+        int bits = ceil(log2(max));
+        if(bits == 1){
+            maximos.insert(pair<string,int>(key[j],2));
+        }else{
+            maximos.insert(pair<string,int>(key[j],bits));
+        }
         tempo.clear();
     }
     return maximos;
@@ -188,19 +206,18 @@ int main()
         cout << endl;
     }*/
     inFile.close();
-    //Initialize states
+    /*
+    cout << endl; 
+
     for (auto const& out:ini_states(fsm_io)){         //Print actual states along its number of repetitions
         cout << out.first << " => " << out.second << endl;
     }
-
-    cout << endl;
-    
     for (auto const& out:port_width(fsm_io,"inputs")){         //Print actual states along its number of repetitions
         cout << out.first << " => " << out.second << endl;
     }
     for (auto const& out:port_width(fsm_io,"outputs")){         //Print actual states along its number of repetitions
         cout << out.first << " => " << out.second << endl;
-    }     
+    } */    
 
     /*map <string,int> countMap;              //Find duplicates
     for(int i=0;i<fsm_io.size();i++){
@@ -217,6 +234,228 @@ int main()
     for (auto const& out:maximos){         //Print actual states along its number of repetitions
         cout << out.first << " => " << out.second << endl;
     }*/
+
+    string text_out;
+    /*text_fsm = "module fsm_c(\n"; 
+    //Initialize states
+    for (auto const& out:ini_states(fsm_io)){         //Print actual states along its number of repetitions
+        cout << out.first << " => " << out.second << endl;
+        text_fsm += 
+    }*/
+                //"module " + module_name + "_TB;\n";
+
+    string name = "FSM.sv";
+    text_out = "//=============================================================================\n";
+    text_out += "// FSM Verilog design\n";
+    text_out += "//=============================================================================\n\n\n";
+    text_out += "//-----------------------------------------------------------------------------\n";
+    text_out += "// Module name and ports declaration\n"; 
+    text_out += "//-----------------------------------------------------------------------------\n\n" ;  
+    text_out += "module state_machine (\n";
+    text_out += "input clk, rst,\n";
+
+    for (auto const& out:port_width(fsm_io,"inputs")){         //Print actual states along its number of repetitions
+        if (out.second == 0){
+            text_out += "input " + out.first + ",\n";
+        }else{
+            text_out += "input " + out.first + " [";
+            string buffer = to_string(out.second-1);
+            text_out += buffer + ":0],\n";
+        }
+    }
+    map <string,int> output = port_width(fsm_io,"outputs");
+    int k=0;
+    for (auto const& out:output){         //Print actual states along its number of repetitions
+        if (out.second == 0){
+            text_out += "output reg " + out.first;
+        }else{
+            text_out += "output reg " + out.first + " [";
+            string buffer = to_string(out.second-1);
+            text_out += buffer + ":0]";
+        }
+        k+=1;
+        if(k!=output.size()){
+            text_out += ",\n";
+        }
+    }
+
+    text_out += ");\n\n";
+    text_out += "//-----------------------------------------------------------------------------\n";
+    text_out += "// FSM states declaration\n";
+    text_out += "//-----------------------------------------------------------------------------\n"; 
+    int buff;
+    map <string,string> states = ini_states(fsm_io);
+    for (auto const& out:states){         //Print actual states along its number of repetitions
+        buff = out.second.size();
+        string buf = to_string(out.second.size());
+        text_out += "parameter " + out.first + " = " + buf + "'b" + out.second +";\n";
+        //cout << out.first << " => " << out.second << endl;
+    }
+
+    //cout << buff << endl;
+
+    if (buff >= 2){
+        string buffer = to_string(buff-1);
+        text_out += "reg ["+buffer+ ":0] state, next_state; \n";
+    }else{
+        text_out += "reg state, next_state; \n";
+    }
+
+    for (auto const& out:states){         //Print actual states along its number of repetitions
+        text_out += " \n //FSM Initialization state";     
+        text_out += "\ninitial begin\n  state=0;\nend\n";
+        text_out += " \n //FSM State transitions (clock dependant)";   
+        text_out += "\nalways @ (posedge clk or rst)\n  begin\n  if (rst) state <= ";
+        text_out += out.first+";\n";
+        text_out += "  else state <= next_state;\n  end\n\n";
+        break;
+    }
+
+    text_out += "//-----------------------------------------------------------------------------\n";
+    text_out += "// FSM States assignment\n"; 
+    text_out += "//-----------------------------------------------------------------------------\n"; 
+    text_out += "always @ (state, ";
+    k=0;
+    map <string,int> ini = port_width(fsm_io,"inputs");
+    for (auto const& out:ini){         //Print actual states along its number of repetitions
+        text_out += out.first ;
+        k+=1;
+        if(k!=ini.size()){
+            text_out += + ", ";
+        }
+    }
+
+    text_out += ")\n";
+    text_out += "begin\n case(state)\n";
+
+    /*for key,value in states.items():
+            if value == 1:
+                for row in self.data["data"]:
+                    if key ==row["actual_state"]:*
+                        text_out += f'{row["actual_state"]}: \n'
+                        for input in row["inputs"]:
+                            if input[1] != -1:
+                                longitud += 1
+                                if flag == False:
+                                    text_out += f"if (({input[0]} == {input[1]}"
+                                    flag = True
+                                else:
+                                    text_out += f" ) & ( {input[0]} == {input[1]}"
+
+                        flag = False*/
+    bool flag = false;
+    bool flag_states = false;
+    int longitud = 0;
+
+    for(auto const& sta:rep_states(fsm_io)){
+        //cout << sta.first << " => " << sta.second << endl;
+        if(sta.second == 1){
+            for(int i=0;i<fsm_io.size();i++){
+                if(sta.first == fsm_io[i]["actual"]["1"]){
+                    text_out += sta.first+": \n";
+                    //cout << fsm_io[i]["inputs"].size() << endl;
+                    //for(int j=0; j<fsm_io[i]["inputs"].size(); j++){
+                    for(auto const& out:fsm_io[i]["inputs"]){
+                        if((out.second != "x")&&(out.second != "X")){
+                            longitud += 1;
+                            if (flag == false){
+                                text_out += "if ((" + out.first +" == "+out.second;
+                                flag = true;
+                            }else{
+                                text_out += ") & ( " + out.first +" == "+out.second;
+                            }
+                            cout << out.first << " => " << out.second << endl;
+                        }
+                    }
+                    flag = false;
+                    if (longitud != 0){
+                            text_out += "))\n";
+                            longitud = 0;
+                    }
+                    text_out += " next_state <= "+fsm_io[i]["next"]["1"]+";\n";
+                }            
+            }
+        }else{
+            for(int i=0;i<fsm_io.size();i++){
+                if(sta.first == fsm_io[i]["actual"]["1"]){
+                    if (flag_states == false){
+                            text_out +=  sta.first+"\n";
+                            flag_states = true;
+                            text_out += "  begin\n";
+                    }
+                    for(auto const& out:fsm_io[i]["inputs"]){
+                        if((out.second != "x")&&(out.second != "X")){
+                            if (flag == false){
+                                text_out += "if ((" + out.first +" == "+out.second;
+                                flag = true;
+                            }else{
+                                text_out += ") & ( " + out.first +" == "+out.second;
+                            }
+                            cout << out.first << " => " << out.second << endl;
+                        }
+                    }
+                    flag = false;
+                    text_out += "))\n";
+                    text_out += "     next_state <= "+fsm_io[i]["next"]["1"]+";\n";
+                }
+            }
+            text_out += "   end\n";
+            flag_states = false;
+        }
+    }
+
+    text_out += "  endcase\nend\n\n";
+    text_out += "//-----------------------------------------------------------------------------\n";
+    text_out += "// FSM Outputs assignment\n"; 
+    text_out += "//-----------------------------------------------------------------------------\n";
+    text_out += "always @ (state)\n";
+    text_out += "  begin\n  case(state)\n";
+    bool flag_out = true;
+
+    for(auto const& sta:rep_states(fsm_io)){
+        for(int i=0;i<fsm_io.size();i++){
+            if((sta.first == fsm_io[i]["actual"]["1"])&&(flag_out)){
+                text_out += "    "+sta.first+": \n";
+                flag_out = false;
+                text_out += "    begin\n";
+                for(auto const& out:fsm_io[i]["outputs"]){
+                    text_out += "        "+out.first+" = "+ out.second+"\n";
+                }
+            }
+        }
+        flag_out = true;
+        text_out += "    end\n";
+    }
+
+    text_out += "  endcase\n";
+    text_out += " end\n\nendmodule";
+    text_out += "\n\n//=============================================================================\n";
+    text_out += "//=============================================================================\n\n";
+
+    /*for key, value in states.items():
+            print(key)
+            for row in self.data["data"]:
+                if key == row["actual_state"] and flag_out:
+                    text_out += f'    {row["actual_state"]}: \n'
+                    flag_out = False
+                    text_out += "    begin\n"
+                    for outputs in row["outputs"]:
+                        text_out += f'        {outputs[0]} = {outputs[1]};\n'
+
+            flag_out = True
+
+            text_out += "    end\n"
+        text_out += "  endcase\n"
+        text_out += " end\n\nendmodule"*/
+
+
+
+
+    //cout << text_tb << endl;
+    fstream  outfile;
+    outfile.open(name, ofstream::out); // name of testbench as the design name
+    outfile << text_out;
+    outfile.close();
 
     return 0;
 }
