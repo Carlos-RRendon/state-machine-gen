@@ -94,7 +94,7 @@ class FsmGenerator():
             max_el = max(bus_dict[key])
 
             try:
-                max_el = math.ceil(math.log2(max_el))
+                max_el = math.floor(math.log(max_el)/math.log(2))+1
                 bus_dict[key] = max_el
             except ValueError:
                 bus_dict[key] = -1
@@ -132,24 +132,18 @@ class FsmGenerator():
         text_out += "input clk, rst,\n"
 
         for key, value in inputs_bus.items():
-            if value <= 0 :
+            if value == 1 :
                 text_out += f'input {key},\n'
             else:
-                if value != 1:
-                    text_out += f'input [{value-1}:0] {key},\n'
-                else:
-                    text_out += f'input [{value}:0] {key},\n'
+                text_out += f'input [{value-1}:0] {key},\n'
 
 
         for key, value in outputs_bus.items():
 
-            if value <= 0 :
+            if value == 1 :
                 text_out += f'output reg {key}'
             else:
-                if value != 1 :
-                    text_out += f'output reg [{value-1}:0] {key}'
-                else:
-                    text_out += f'output reg [{value}:0] {key}'
+               text_out += f'output reg [{value-1}:0] {key}'
 
 
             if key != (list(outputs_bus)[-1]):
@@ -296,7 +290,7 @@ class FsmGenerator():
         text_out += "//=============================================================================\n\n"
 
         print(text_out)
-
+        print(f"Your file {name} has been created")
         f = open(name, "w")
         f.write(text_out)
         f.close
