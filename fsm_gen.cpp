@@ -63,7 +63,6 @@ map <string,string> ini_states(map <int,map <string,map <string,string> > > stat
     }
     //Bit dimension and initializate states
     int bits = ceil(log2(countMap.size()));
-    //cout << bits << endl;
     int j=0;
     map <string,string> iniStates;
     for (auto const& out:countMap){         //Print actual states along its number of repetitions
@@ -83,8 +82,7 @@ map <string,int> port_width(map <int,map <string,map <string,string> > > states,
             key.push_back(in.first);
         }
     }
-    cout <<endl;            //Erase duplicates
-    cout << type<< endl;
+    
     auto end = key.end();
     for(auto it=key.begin();it != end; ++it){
             end = remove(it + 1, end, *it);
@@ -155,7 +153,6 @@ int main()
                 }
                 regex comma(com1);
                 regex_search(Inputs, m, comma);
-                //cout << "Aqui" << endl;
                 for(int i=1;i<=(pc_in+1);i++){
                     fsm_io[ren-1]["inputs"][m[((i+i)-1)]] = m[(i+i)];
                 }
@@ -164,7 +161,6 @@ int main()
                 regex_search(Inputs, m, comma);
                 fsm_io[ren-1]["inputs"][m[1]] = m[2];
             }
-            //cout << Outputs << endl;
             if (pc_ou > 0){ //For Outputs
                 com1 = com;
                 for(int i=0;i<pc_ou;i++){
@@ -172,10 +168,8 @@ int main()
                 }
                 regex comma(com1);
                 regex_search(Outputs, m, comma);
-                //cout << "Aqui" << endl;
                 for(int i=1;i<=(pc_ou+1);i++){
                     fsm_io[ren-1]["outputs"][m[((i+i)-1)]] = m[(i+i)];
-                    cout << "Check: " << m[((i+i)-1)] << m[(i+i)] << endl;
                 }
             }else{
                 regex comma(com);
@@ -187,64 +181,12 @@ int main()
         ren += 1;
     }
 
-    for(int i=0;i<fsm.size();i++){
-        cout << fsm[i]["actual"] << endl;
-        cout << fsm[i]["next"] << endl;
-        cout << fsm[i]["inputs"] << endl;
-        cout << fsm[i]["outputs"] << endl << "\n";
-    }
-
-    /*for(int i=0;i<fsm_io.size();i++){
-        cout << "actual => " << fsm_io[i]["actual"]["1"] << endl;
-        cout << "next => " << fsm_io[i]["next"]["1"] << endl;
-        for(auto const& in:fsm_io[i]["inputs"]){
-            cout << in.first << " => " << in.second << endl;
-        }
-        for(auto const& out:fsm_io[i]["outputs"]){
-            cout << out.first << " => " << out.second << endl;
-        }
-        cout << endl;
-    }*/
+    
     inFile.close();
-    /*
-    cout << endl; 
-
-    for (auto const& out:ini_states(fsm_io)){         //Print actual states along its number of repetitions
-        cout << out.first << " => " << out.second << endl;
-    }
-    for (auto const& out:port_width(fsm_io,"inputs")){         //Print actual states along its number of repetitions
-        cout << out.first << " => " << out.second << endl;
-    }
-    for (auto const& out:port_width(fsm_io,"outputs")){         //Print actual states along its number of repetitions
-        cout << out.first << " => " << out.second << endl;
-    } */    
-
-    /*map <string,int> countMap;              //Find duplicates
-    for(int i=0;i<fsm_io.size();i++){
-        map <string,int> result;
-        for(auto const& in:fsm_io[i]["inputs"]){
-        result = countMap.insert(pair<string,int>(in.first,1));
-        }
-        if(result.second == false)
-            result.first->second++;
-    }*/
-
-    /*cout << endl;
-
-    for (auto const& out:maximos){         //Print actual states along its number of repetitions
-        cout << out.first << " => " << out.second << endl;
-    }*/
-
+      
     string text_out;
-    /*text_fsm = "module fsm_c(\n"; 
-    //Initialize states
-    for (auto const& out:ini_states(fsm_io)){         //Print actual states along its number of repetitions
-        cout << out.first << " => " << out.second << endl;
-        text_fsm += 
-    }*/
-                //"module " + module_name + "_TB;\n";
-
-    string name = "FSM.sv";
+    
+    string name = "FSM_C.sv";
     text_out = "//=============================================================================\n";
     text_out += "// FSM Verilog design\n";
     text_out += "//=============================================================================\n\n\n";
@@ -289,10 +231,7 @@ int main()
         buff = out.second.size();
         string buf = to_string(out.second.size());
         text_out += "parameter " + out.first + " = " + buf + "'b" + out.second +";\n";
-        //cout << out.first << " => " << out.second << endl;
     }
-
-    //cout << buff << endl;
 
     if (buff >= 2){
         string buffer = to_string(buff-1);
@@ -328,33 +267,15 @@ int main()
     text_out += ")\n";
     text_out += "begin\n case(state)\n";
 
-    /*for key,value in states.items():
-            if value == 1:
-                for row in self.data["data"]:
-                    if key ==row["actual_state"]:*
-                        text_out += f'{row["actual_state"]}: \n'
-                        for input in row["inputs"]:
-                            if input[1] != -1:
-                                longitud += 1
-                                if flag == False:
-                                    text_out += f"if (({input[0]} == {input[1]}"
-                                    flag = True
-                                else:
-                                    text_out += f" ) & ( {input[0]} == {input[1]}"
-
-                        flag = False*/
     bool flag = false;
     bool flag_states = false;
     int longitud = 0;
 
     for(auto const& sta:rep_states(fsm_io)){
-        //cout << sta.first << " => " << sta.second << endl;
         if(sta.second == 1){
             for(int i=0;i<fsm_io.size();i++){
                 if(sta.first == fsm_io[i]["actual"]["1"]){
                     text_out += sta.first+": \n";
-                    //cout << fsm_io[i]["inputs"].size() << endl;
-                    //for(int j=0; j<fsm_io[i]["inputs"].size(); j++){
                     for(auto const& out:fsm_io[i]["inputs"]){
                         if((out.second != "x")&&(out.second != "X")){
                             longitud += 1;
@@ -364,7 +285,6 @@ int main()
                             }else{
                                 text_out += ") & ( " + out.first +" == "+out.second;
                             }
-                            cout << out.first << " => " << out.second << endl;
                         }
                     }
                     flag = false;
@@ -391,7 +311,6 @@ int main()
                             }else{
                                 text_out += ") & ( " + out.first +" == "+out.second;
                             }
-                            cout << out.first << " => " << out.second << endl;
                         }
                     }
                     flag = false;
@@ -432,30 +351,12 @@ int main()
     text_out += "\n\n//=============================================================================\n";
     text_out += "//=============================================================================\n\n";
 
-    /*for key, value in states.items():
-            print(key)
-            for row in self.data["data"]:
-                if key == row["actual_state"] and flag_out:
-                    text_out += f'    {row["actual_state"]}: \n'
-                    flag_out = False
-                    text_out += "    begin\n"
-                    for outputs in row["outputs"]:
-                        text_out += f'        {outputs[0]} = {outputs[1]};\n'
-
-            flag_out = True
-
-            text_out += "    end\n"
-        text_out += "  endcase\n"
-        text_out += " end\n\nendmodule"*/
-
-
-
-
-    //cout << text_tb << endl;
     fstream  outfile;
     outfile.open(name, ofstream::out); // name of testbench as the design name
     outfile << text_out;
     outfile.close();
+    cout << "Your file " + name;
+    cout  << " was succesful created" << endl;
 
     return 0;
 }

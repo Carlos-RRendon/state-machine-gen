@@ -4,3 +4,6 @@ asdf.py
 venv
 .idea
 __pycache__
+*.sv
+*.v
+*.exe
