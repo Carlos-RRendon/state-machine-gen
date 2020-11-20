@@ -306,7 +306,7 @@ int main()
             for(int i=0;i<fsm_io.size();i++){
                 if(sta.first == fsm_io[i]["actual"]["1"]){
                     if (flag_states == false){
-                            text_out +=  sta.first+"\n";
+                            text_out +=  sta.first+" :\n";
                             flag_states = true;
                             text_out += "  begin\n";
                     }
@@ -345,7 +345,7 @@ int main()
                 flag_out = false;
                 text_out += "    begin\n";
                 for(auto const& out:fsm_io[i]["outputs"]){
-                    text_out += "        "+out.first+" = "+ out.second+"\n";
+                    text_out += "        "+out.first+" = "+ out.second+";\n";
                 }
             }
         }
