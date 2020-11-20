@@ -12,123 +12,118 @@ int BinToDec(long long n)                   //Function to convert a binary numbe
     while (n!=0)                            //While 
     {
         remainder = n%10;                   //Save the remainder of n%10
-        n /= 10;
-        decimalNumber += remainder*pow(2,i);
-        ++i;
+        n /= 10;                            //Update n with n=n/10
+        decimalNumber += remainder*pow(2,i);//Update the decimal number
+        ++i;                                //Increase the counter
     }
-    return decimalNumber;
+    return decimalNumber;                   //Return the final decimal number
 }
 
-string decToBinary(int n, int dim) 
+string decToBinary(int n, int dim)          //Function to convert a decimal number into a binary number
 { 
-    // array to store binary number 
-    int binaryNum[dim]; 
-    string binario;
-    // counter for binary array 
-    int i = 0;    
-    while (n > 0) { 
-  
-        // storing remainder in binary array 
-        binaryNum[i] = n % 2; 
-        
-        n = n / 2; 
-        i++; 
+    int binaryNum[dim];                     //Array to store the binary number
+    string binario;                         //Strin to save the binary number
+    int i = 0;                              //Counter for the binary array
+    while (n > 0) {                         //While n bigger than zero
+        binaryNum[i] = n % 2;               //Store the remainder in the binary array 
+        n /= 2;                             //Update n with n = n/2
+        i++;                                //Increase the counter
     } 
-    for(int k = 0; k< dim-i;k++)
-        binario += "0";
-    for (int j = i - 1; j >= 0; j--) 
-        binario += to_string(binaryNum[j]);
-    return binario;
-   
+    for(int k = 0; k< dim-i;k++)            //For to add to extend the binary number until the required dimension
+        binario += "0";                     //Fill with zero
+    for (int j = i - 1; j >= 0; j--)        //For loop to change the order of the binary number
+        binario += to_string(binaryNum[j]); //Change the order of thee binary number
+    return binario;                         //Return the final binary number
 } 
 
 //Function to intialize states
 map <string,int> rep_states(map <int,map <string,map <string,string> > > states){
-    map <string,int> countMap;              //Find duplicates
-    for(int i=0;i<states.size();i++){
+    map <string,int> countMap;              //Map to save the key and the number of repetitions
+    for(int i=0;i<states.size();i++){       //For loop to read all the given states
+        //Insert in all the found keys 1
         auto result = countMap.insert(pair<string,int>(states[i]["actual"]["1"],1));
-        if(result.second == false)
-            result.first->second++;
+        if(result.second == false)          //If a 1 cannot be given
+            result.first->second++;         //Increase the counter of the key
     }
-    return countMap;
+    return countMap;                        //Return the map with the number of repetitions
 }
 
 //Function to intialize states
 map <string,string> ini_states(map <int,map <string,map <string,string> > > states){
-    map <string,int> countMap;              //Find duplicates
-    for(int i=0;i<states.size();i++){
+    map <string,int> countMap;              //Map to save the key and the number of repetitions
+    for(int i=0;i<states.size();i++){       //For loop to read all the given states
+        //Insert in all the found keys 1
         auto result = countMap.insert(pair<string,int>(states[i]["actual"]["1"],1));
-        if(result.second == false)
-            result.first->second++;
+        if(result.second == false)          //If a 1 cannot be given
+            result.first->second++;         //Increase the counter of the key
     }
     //Bit dimension and initializate states
-    int bits = ceil(log2(countMap.size()));
-    int j=0;
-    map <string,string> iniStates;
+    int bits = ceil(log2(countMap.size())); //Maximum dimension of the states
+    int j=0;                                //Initialize counter
+    map <string,string> iniStates;          //Map to save the state name and its binary representation
     for (auto const& out:countMap){         //Print actual states along its number of repetitions
-        iniStates.insert(pair<string,string> (out.first, decToBinary(j,bits) ) );
-        j+=1;
+        //Insert into the iniStates map the name and its binary number
+        iniStates.insert(pair<string,string> (out.first, decToBinary(j,bits)));
+        j+=1;                               //Increase counter
     }
-
-    return iniStates;
+    return iniStates;                       //Return the created map
 }
-
+//Function to return the 
 map <string,int> port_width(map <int,map <string,map <string,string> > > states,string type){
     map <string,int> maximos;
     vector <string> key;
-    
-    for(int i=0;i<states.size();i++){
-        for(auto const& in:states[i][type]){
-            key.push_back(in.first);
+    for(int i=0;i<states.size();i++){       //For loop to read all the entries in the map
+        for(auto const& in:states[i][type]){//For loop to read all the inputs/outputs
+            key.push_back(in.first);        //Extract the keys from inputs/outputs
         }
     }
-    
-    auto end = key.end();
-    for(auto it=key.begin();it != end; ++it){
-            end = remove(it + 1, end, *it);
+    auto end = key.end();                   //Create a variable end to save the last index
+    for(auto it=key.begin();it != end; ++it){//For loop to iterate over all the extracted keys
+            end = remove(it + 1, end, *it); //Remove a key if it was found before
     }
-    key.erase(end,key.end());
-    vector <long long> tempo;
-    for(int j=0; j<key.size();j++){         //Print the inputs in order
-        for(int i=0;i<states.size();i++){
-            for(auto const& in:states[i][type]){
-                if(in.first == key[j]){
-                    if((in.second != "x")&&(in.second !="X")){
+    key.erase(end,key.end());               //Erase the duplicated keys
+    vector <long long> tempo;               //Create a variable tempo
+    for(int j=0; j<key.size();j++){         //For loop of the keys without repetition
+        for(int i=0;i<states.size();i++){   //For loop to read all the entries in the map
+            for(auto const& in:states[i][type]){//For loop to find in the inputs/outpus map
+                if(in.first == key[j]){     //If the input name is equal to the key
+                    if((in.second != "x")&&(in.second !="X")){//If the signal value is different than x|X
+                        //Transform the binary number into decimal
                         long long binsignal = BinToDec(stoi(in.second));
-                        tempo.push_back(binsignal);
+                        tempo.push_back(binsignal);//Save the conversion in the temporal vector
                     }
                 }
             }
         }
-        int max = *std::max_element(tempo.begin(),tempo.end());
-        int bits = ceil(log2(max));
-        if(bits < 0){
-            maximos.insert(pair<string,int>(key[j],0));
-        }else if(bits == 1){
-            maximos.insert(pair<string,int>(key[j],2));
-        }else{
-            maximos.insert(pair<string,int>(key[j],bits));
+        int max = *std::max_element(tempo.begin(),tempo.end()); //Find the maximum value of the temporal vector
+        if (max == 0){
+            max = 1;
         }
-        tempo.clear();
+        int bits = floor(log(max)/log(2))+1;
+        if(bits == 1){                                           //If the bits are less than 0
+            maximos.insert(pair<string,int>(key[j],0));         //The signals do not have buffer
+        }else {                                                //In any other case
+            maximos.insert(pair<string,int>(key[j],bits));      //The bits variable has the required buffer
+        } 
+        tempo.clear();                                          //Clean the temporal vector
     }
-    return maximos;
+    return maximos;                                             //Return the map with the input/output buffers
 }
  
-int main()
+int main()                                                      //Main function
 {
-    ifstream inFile;
-    string Present;
-    string Next;
-    string Inputs;
-    string Outputs;
-    inFile.open("FSM_MIPS.csv");
-    if(inFile.is_open()){
-        cout << "File has been opened" << endl; 
-    }else{
-        cout << "File couldn't been opened" << endl;
-    }
-    int ren = 0;
-    map <int,map <string,string> > fsm;
+    ifstream inFile;                                            //Create an ifstream variable to read the .csv file                                     
+    string Present;                                             //String to save the actual state
+    string Next;                                                //String to save the next state 
+    string Inputs;                                              //String to save the inputs
+    string Outputs;                                             //String to save the outputs
+    inFile.open("FSM_MIPS.csv");                                //Open the file called FSM_MIPS.csv
+    if(inFile.is_open()){                                       //If the file was opened
+        cout << "File has been opened" << endl;                 //Print that the file has been opened
+    }else{                                                      //If the files was not opened
+        cout << "File couldn't been opened" << endl;            //Print that the file couldn't been opened
+    }           
+    int ren = 0;                                                //
     map <int,map <string,map <string,string> > > fsm_io;
     string com = "\\s*(\\w+)\\s*\\=\\s*(\\w+)\\s*";
     string com1;
@@ -140,10 +135,6 @@ int main()
         getline( inFile, Inputs, ',');
         getline( inFile, Outputs, '\n');
         if ((ren > 0) & (Present != "")){
-            fsm[ren-1]["actual"] = Present;
-            fsm[ren-1]["next"] = Next;
-            fsm[ren-1]["inputs"] = Inputs;
-            fsm[ren-1]["outputs"] = Outputs;
             fsm_io[ren-1]["actual"]["1"] = Present;
             fsm_io[ren-1]["next"]["1"] = Next;
             size_t pc_in = count(Inputs.begin(),Inputs.end(),';');
