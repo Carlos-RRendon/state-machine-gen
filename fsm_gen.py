@@ -296,7 +296,7 @@ class FsmGenerator():
         text_out += "//=============================================================================\n\n"
 
         print(text_out)
-
+        print(f"Your file {name} has been created")
         f = open(name, "w")
         f.write(text_out)
         f.close
