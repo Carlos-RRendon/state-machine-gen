@@ -212,8 +212,15 @@ int main()
             text_out += "output reg " + out.first;
         }else{
             text_out += "output reg " + out.first + " [";
-            string buffer = to_string(out.second-1);
-            text_out += buffer + ":0]";
+            if (out.second >= 2){
+                string buffer = to_string(out.second-1);
+                text_out += buffer + ":0]";
+            }
+            else {
+                string buffer = to_string(out.second);
+                text_out += buffer + ":0]";
+            }
+            
         }
         k+=1;
         if(k!=output.size()){
