@@ -1,0 +1,17 @@
+﻿Present,Next,Inputs,Outputs
+Fetch,Decode,x,IorD = 0;AluSrcAt = 0;AluSrcB = 00;ALUOp = 00;PCSrc = 00;IRWrite = 1;PCWrite = 1;RegDest = 1;MemtoReg = 1;MemWrite = 1;Branch = 1;RegWrite = 0
+Decode,MemAdr,OpCode = 100011; OpCode = 101011,IorD = 0;AluSrcA = 0;AluSrcB = 11;ALUOp = 00;PCSrc = 00;IRWrite = 0;PCWrite = 0;RegDest = 0;MemtoReg = 0;MemWrite = 0;Branch = 0;RegWrite = 0
+Decode,Execute,OpCode = 000000,IorD = 0;AluSrcA = 0;AluSrcB = 11;ALUOp = 00;PCSrc = 00;IRWrite = 0;PCWrite = 0;RegDest = 0;MemtoReg = 0;MemWrite = 0;Branch = 0;RegWrite = 0
+Decode,Branch,OpCode = 000100,IorD = 0;AluSrcA = 0;AluSrcB = 11;ALUOp = 00;PCSrc = 00;IRWrite = 0;PCWrite = 0;RegDest = 0;MemtoReg = 0;MemWrite = 0;Branch = 0;RegWrite = 0;
+Decode,Addi Execute,OpCode = 001000,IorD = 0;AluSrcA = 0;AluSrcB = 11;ALUOp = 00;PCSrc = 00;IRWrite = 0;PCWrite = 0;RegDest = 0;MemtoReg = 0;MemWrite = 0;Branch = 0;RegWrite = 0;
+MemAdr,MemRead,OpCode = 100011,IorD = 0;AluSrcAt = 1;AluSrcB = 10;ALUOp = 00;PCSrc = 00;IRWrite = 0;PCWrite = 0;RegDest = 0;MemtoReg = 0;MemWrite = 0;Branch = 0;RegWrite = 0;
+MemAdr,MemWrite,OpCode = 101011,IorD = 0;AluSrcAt = 1;AluSrcB = 10;ALUOp = 00;PCSrc = 00;IRWrite = 0;PCWrite = 0;RegDest = 0;MemtoReg = 0;MemWrite = 0;Branch = 0;RegWrite = 0;
+MemRead,MemWriteback,X,IorD = 1;AluSrcAt = 0;AluSrcB = 00;ALUOp = 00;PCSrc = 00;IRWrite = 0;PCWrite = 0;RegDest = 0;MemtoReg = 0;MemWrite = 0;Branch = 0;RegWrite = 0;
+MemWriteback,Fetch,x,IorD = 0;AluSrcAt = 0;AluSrcB = 00;ALUOp = 00;PCSrc = 00;IRWrite = 0;PCWrite = 0;RegDest = 1;MemtoReg = 0;MemWrite = 0;Branch = 0;RegWrite = 1;
+MemWrite,Fetch,x,IorD = 1;AluSrcAt = 0;AluSrcB = 00;ALUOp = 00;PCSrc = 00;IRWrite = 0;PCWrite = 0;RegDest = 0;MemtoReg = 0;MemWrite = 1;Branch = 0;RegWrite = 0;
+Execute,ALU Writeback,X,IorD = 0;AluSrcAt = 1;AluSrcB = 00;ALUOp = 10;PCSrc = 00;IRWrite = 0;PCWrite = 0;RegDest = 0;MemtoReg = 0;MemWrite = 0;Branch = 0;RegWrite = 0;
+ALU Writeback,Fetch,x,IorD = 0;AluSrcAt = 0;AluSrcB = 00;ALUOp = 00;PCSrc = 00;IRWrite = 0;PCWrite = 1;RegDest = 0;MemtoReg = 0;MemWrite = 0;Branch = 0;RegWrite = 1;
+Branch,Fetch,x,IorD = 0;AluSrcAt = 1;AluSrcB = 00;ALUOp = 10;PCSrc = 00;IRWrite = 0;PCWrite = 0;RegDest = 0;MemtoReg = 0;MemWrite = 0;Branch = 1;RegWrite = 0;
+Addi Execute,Addi Writeback,IorD = 0;AluSrcAt = 1;AluSrcB = 10;ALUOp = 00;PCSrc = 00;IRWrite = 0;PCWrite = 0;RegDest = 0;MemtoReg = 0;MemWrite = 0;Branch = 0;RegWrite = 0;
+Addi Writeback,Fetch,x,IorD = 0;AluSrcAt = 0;AluSrcB = 00;ALUOp = 00;PCSrc = 00;IRWrite = 0;PCWrite = 1;RegDest = 0;MemtoReg = 0;MemWrite = 0;Branch = 0;RegWrite = 1;
+Jump,Fetch,x,IorD = 0;AluSrcAt = 0;AluSrcB = 00;ALUOp = 00;PCSrc = 00;IRWrite = 0;PCWrite = 1;RegDest = 0;MemtoReg = 0;MemWrite = 0;Branch = 0;RegWrite = 1;
