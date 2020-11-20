@@ -6,12 +6,12 @@
 
 using namespace std;
 
-int BinToDec(long long n)
+int BinToDec(long long n)                   //Function to convert a binary number into a decimal number
 {
-    int decimalNumber = 0, i = 0, remainder;
-    while (n!=0)
+    int decimalNumber = 0, i = 0, remainder;//Initial variables
+    while (n!=0)                            //While 
     {
-        remainder = n%10;
+        remainder = n%10;                   //Save the remainder of n%10
         n /= 10;
         decimalNumber += remainder*pow(2,i);
         ++i;
@@ -202,9 +202,9 @@ int main()
         if (out.second == 0){
             text_out += "input " + out.first + ",\n";
         }else{
-            text_out += "input " + out.first + " [";
+            text_out += "input [";
             string buffer = to_string(out.second-1);
-            text_out += buffer + ":0],\n";
+            text_out += buffer + ":0] "+ out.first+",\n";
         }
     }
 
@@ -214,10 +214,10 @@ int main()
         if (out.second == 0){
             text_out += "output reg " + out.first;
         }else{
-            text_out += "output reg " + out.first + " [";
+            text_out += "output reg [";
             if (out.second >= 2){
                 string buffer = to_string(out.second-1);
-                text_out += buffer + ":0]";
+                text_out += buffer + ":0] "+ out.first;
             }
             else {
                 string buffer = to_string(out.second);
