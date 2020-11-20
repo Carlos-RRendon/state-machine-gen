@@ -119,7 +119,7 @@ int main()
     string Next;
     string Inputs;
     string Outputs;
-    inFile.open("FSM.csv");
+    inFile.open("FSM_MIPS.csv");
     if(inFile.is_open()){
         cout << "File has been opened" << endl; 
     }else{
