@@ -102,7 +102,9 @@ map <string,int> port_width(map <int,map <string,map <string,string> > > states,
         }
         int max = *std::max_element(tempo.begin(),tempo.end());
         int bits = ceil(log2(max));
-        if(bits == 1){
+        if(bits < 0){
+            maximos.insert(pair<string,int>(key[j],0));
+        }else if(bits == 1){
             maximos.insert(pair<string,int>(key[j],2));
         }else{
             maximos.insert(pair<string,int>(key[j],bits));
@@ -205,6 +207,7 @@ int main()
             text_out += buffer + ":0],\n";
         }
     }
+
     map <string,int> output = port_width(fsm_io,"outputs");
     int k=0;
     for (auto const& out:output){         //Print actual states along its number of repetitions
