@@ -249,13 +249,13 @@ int main()                                                      //Main function
     text_out += "// FSM States assignment\n"; 
     text_out += "//-----------------------------------------------------------------------------\n"; 
     text_out += "always @ (state, ";
-    k=0;                                //Restart the counter k
-    map <string,int> ini = port_width(fsm_io,"inputs");//Map to read the input buffers
-    for (auto const& out:ini){          //For loop to read the input buffers
-        text_out += out.first ;         //Prin the input name
-        k+=1;                           //Increase the counter
-        if(k!=ini.size()){              //If the element is not the last one
-            text_out += + ", ";         //Print a ","
+    k=0;                                                                //Restart the counter k
+    map <string,int> ini = port_width(fsm_io,"inputs");                 //Map to read the input buffers
+    for (auto const& out:ini){                                          //For loop to read the input buffers
+        text_out += out.first ;                                         //Print the input name
+        k+=1;                                                           //Increase the counter
+        if(k!=ini.size()){                                              //If the element is not the last one
+            text_out += + ", ";                                         //Print a ","
         }
     }
     text_out += ")\n";                                                  //always statement
