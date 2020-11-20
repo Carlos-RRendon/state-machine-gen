@@ -280,7 +280,7 @@ int main()
     bool flag = false;
     bool flag_states = false;
     int longitud = 0;
-
+cout << "Que onda" << endl;
     for(auto const& sta:rep_states(fsm_io)){
         if(sta.second == 1){
             for(int i=0;i<fsm_io.size();i++){
@@ -290,10 +290,14 @@ int main()
                         if((out.second != "x")&&(out.second != "X")){
                             longitud += 1;
                             if (flag == false){
-                                text_out += "if ((" + out.first +" == "+out.second;
+                                text_out += "if ((" + out.first +" == ";
+                                text_out += out.second;
+                                //cout << out.second.size() << endl;
                                 flag = true;
                             }else{
-                                text_out += ") & ( " + out.first +" == "+out.second;
+                                text_out += ") & ( " + out.first +" == ";
+                                text_out += out.second;
+                                //cout << out.second.size() << endl;
                             }
                         }
                     }
@@ -315,11 +319,14 @@ int main()
                     }
                     for(auto const& out:fsm_io[i]["inputs"]){
                         if((out.second != "x")&&(out.second != "X")){
+                            string n_bit=to_string(out.second.size());
                             if (flag == false){
-                                text_out += "if ((" + out.first +" == "+out.second;
+                                text_out += "if ((" + out.first +" == ";
+                                text_out += n_bit + "'b" +out.second;
                                 flag = true;
                             }else{
-                                text_out += ") & ( " + out.first +" == "+out.second;
+                                text_out += ") & ( " + out.first +" == ";
+                                text_out += n_bit+"'b" +out.second;
                             }
                         }
                     }
@@ -348,7 +355,14 @@ int main()
                 flag_out = false;
                 text_out += "    begin\n";
                 for(auto const& out:fsm_io[i]["outputs"]){
-                    text_out += "        "+out.first+" = "+ out.second+";\n";
+                    int int_bit = out.second.size();
+                    string n_bit=to_string(int_bit);
+                    if (int_bit == 1){
+                        text_out += "        "+out.first+" = "+ out.second+";\n";
+                    }else{
+                        text_out += "        "+out.first+" = " + n_bit+"'b" + out.second+";\n";
+                    }
+                    
                 }
             }
         }
